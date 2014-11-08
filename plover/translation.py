@@ -365,14 +365,15 @@ class Translator:
         result = self._dictionary.lookup(dict_key)
         if result is not None:
             return result
-        for key in suffixes:
-            if key in strokes[-1].steno_keys:
-                dict_key = (Stroke([key]).rtfcre,)
+        for suffix_keys in suffixes:
+            if all(key in strokes[-1].steno_keys for key in suffix_keys):
+                dict_key = (Stroke(suffix_keys).rtfcre,)
                 suffix_mapping = self._dictionary.lookup(dict_key)
                 if suffix_mapping is None:
                     continue
                 keys = strokes[-1].steno_keys[:]
-                keys.remove(key)
+                for key in suffix_keys:
+                    keys.remove(key)
                 copy = strokes[:]
                 copy[-1] = Stroke(keys)
                 dict_key = tuple(s.rtfcre for s in copy)
@@ -382,6 +383,11 @@ class Translator:
                 return main_mapping + ' ' + suffix_mapping
         return None
 
+SUFFIX_KEYS = [['-S'], \
+               ['-G'], \
+               ['*','-R'], \
+               ['-Z'], \
+               ['-D']] 
 
 class _State:
     """An object representing the current state of the translator state machine.
