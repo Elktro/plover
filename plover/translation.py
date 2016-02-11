@@ -428,4 +428,3 @@ class _State:
         if translation_index:
             self.tail = self.translations[translation_index - 1]
         del self.translations[:translation_index]
-
