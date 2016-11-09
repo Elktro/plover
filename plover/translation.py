@@ -389,7 +389,7 @@ SUFFIX_KEYS = [['-S'], \
                ['-Z'], \
                ['-D']] 
 
-class _State:
+class _State(object):
     """An object representing the current state of the translator state machine.
 
     Attributes:
